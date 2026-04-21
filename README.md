@@ -80,20 +80,20 @@ The `/health` endpoint used by liveness and readiness probes returns `200 OK`.
 - **Readiness Probe** → controls when pod receives traffic  
 - **Liveness Probe** → restarts container if unhealthy  
 
-### Auto Scaling
+#### Auto Scaling
 - HPA monitors CPU via Metrics Server  
 - Scales pods between min and max replicas  
 - Ensures reliable performance and availability under varying load conditions 
 
-### Helm
+#### Helm
 - Separates configuration from logic  
 - `values.yaml` → controls behavior  
 - Templates → define system structure  
 
 
 
-### Key Concepts & Learnings
-*******************************
+### What I Learned
+*********************
 - Built a system combining **auto-scaling (HPA)** and **self-healing (probes)**  
 - Understood Kubernetes **feedback loop**: metrics → decision → scaling  
 - The difference between **liveness** and **readiness probes** and their role in system stability  
