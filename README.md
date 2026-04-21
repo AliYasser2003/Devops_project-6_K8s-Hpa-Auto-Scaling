@@ -1,7 +1,8 @@
 # DevOps Project 6: Kubernetes HPA Auto-Scaling System
 *********************************************************
-This project demonstrates a Kubernetes-based system that automatically scales application pods based on
-CPU usage while ensuring system stability using health probes.
+A Kubernetes-based self-healing and auto-scaling system that dynamically scales application pods using
+CPU metrics while maintaining high availability through health probes.
+
 
 ## Overview
 **************
@@ -12,12 +13,30 @@ The system combines:
 - Horizontal Pod Autoscaler (HPA)
 - Helm (for configuration and templating)
 
+
 ### Architecture & Flow
 **************************
 #### System Flow
 ![System Flow](screenshots/7_Flow.png)
 #### System Architecture
 ![System Architecture](screenshots/6_Architecture.png)
+
+
+### Architecture Explanation
+*******************************
+The system consists of two main subsystems:
+
+a) **Health System (Probes):**
+  - Uses `/health` endpoint
+  - Readiness probe controls traffic flow
+  - Liveness probe ensures automatic recovery
+
+b) **Scaling System (HPA):**
+  - Collects CPU metrics via Metrics Server
+  - HPA makes scaling decisions
+  - Deployment updates number of replicas dynamically
+
+Both systems work together to ensure the application is **scalable, stable, and self-healing**.
 
 
 ### Technologies Used
@@ -31,89 +50,86 @@ The system combines:
 
 
 ### System Demonstration
+***************************
 
 #### 1) Metrics Server (CPU Monitoring)
-
+Provides real-time CPU usage for each pod used by HPA.
 ![Metrics](screenshots/1_Metrics-Server.png)
 
-Provides real-time CPU usage for each pod used by HPA.
-
-
 #### 2) HPA Scaling Decision
-
+HPA detects CPU usage exceeding threshold (70%) and increases replicas.
 ![HPA](screenshots/2_Hpa-Scaling-Decision.png)
 
-HPA detects CPU usage exceeding threshold (70%) and increases replicas.
-
-
 #### 3) Pod Scaling in Action
-
+New pods are created dynamically (Pending → Running) under load.
 ![Scaling](screenshots/3_Pod-Scaling.png)
 
-New pods are created dynamically (Pending → Running) under load.
-
-
 #### 4) Application Access
-
+Application exposed and accessible via `localhost:4000`.
 ![App](screenshots/4_App-Home.png)
 
-Application exposed and accessible via `localhost:4000`.
-
-
 #### 5) Health Endpoint
-
-![Health](screenshots/5_health-Check-Endpoint.png.png)
-
 The `/health` endpoint used by liveness and readiness probes returns `200 OK`.
+![Health](screenshots/5_health-Check-Endpoint.png)
+
 
 
 ### Key Concepts
-
-#### 🔹 Health Probes
-
+*******************
+#### Health Probes
 - **Readiness Probe** → controls when pod receives traffic  
 - **Liveness Probe** → restarts container if unhealthy  
 
----
-
-### 🔹 Auto Scaling
-
+### Auto Scaling
 - HPA monitors CPU via Metrics Server  
 - Scales pods between min and max replicas  
-- Ensures system stability under load  
+- Ensures reliable performance and availability under varying load conditions 
 
----
-
-### 🔹 Helm
-
+### Helm
 - Separates configuration from logic  
 - `values.yaml` → controls behavior  
 - Templates → define system structure  
 
----
 
-## ▶️ How to Run
 
+### Key Concepts & Learnings
+*******************************
+- Built a system combining **auto-scaling (HPA)** and **self-healing (probes)**  
+- Understood Kubernetes **feedback loop**: metrics → decision → scaling  
+- The difference between **liveness** and **readiness probes** and their role in system stability  
+- Designed a `/health` endpoint for automated health monitoring  
+- Used **Metrics Server + HPA** for dynamic CPU-based scaling  
+- Learned how to separate **configuration (Helm values)** from **infrastructure logic**
+- Observed real system behavior under load (pods scaling dynamically)  
+- Ensured high availability by routing traffic only to **ready pods**
+
+
+
+### How to Run
+*****************
 ```bash
-# Start minikube
+### Start minikube
 minikube start
 
-# Enable metrics server
+### Enable metrics server
 minikube addons enable metrics-server
 
-# Deploy using Helm
+### Deploy using Helm
 cd helm/my-app
 helm install my-app .
 
-# Check pods
+### Check pods
 kubectl get pods
 
-# Check HPA
+### Check HPA
 kubectl get hpa
 
-# Generate load
+### Generate load
 kubectl run -i --tty load-generator --image=busybox -- /bin/sh
 
-# Inside pod
+### Inside pod
 while true; do wget -q -O- http://my-app-service; done
+```
 
+## Author
+Ali Yasser
