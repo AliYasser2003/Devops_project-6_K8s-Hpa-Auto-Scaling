@@ -36,7 +36,7 @@ b) **Scaling System (HPA):**
   - HPA makes scaling decisions
   - Deployment updates number of replicas dynamically
 
-Both systems work together to ensure the application is **scalable, stable, and self-healing**.
+Both systems work together to ensure the application is scalable, stable, and self-healing.
 
 
 ### Technologies Used
@@ -77,8 +77,8 @@ The `/health` endpoint used by liveness and readiness probes returns `200 OK`.
 ### Key Concepts
 *******************
 #### Health Probes
-- **Readiness Probe** → controls when pod receives traffic  
-- **Liveness Probe** → restarts container if unhealthy  
+- Readiness Probe → controls when pod receives traffic  
+- Liveness Probe → restarts container if unhealthy  
 
 #### Auto Scaling
 - HPA monitors CPU via Metrics Server  
@@ -94,14 +94,14 @@ The `/health` endpoint used by liveness and readiness probes returns `200 OK`.
 
 ### What I Learned
 *********************
-- Built a system combining **auto-scaling (HPA)** and **self-healing (probes)**  
-- Understood Kubernetes **feedback loop**: metrics → decision → scaling  
-- The difference between **liveness** and **readiness probes** and their role in system stability  
+- Built a system combining auto-scaling (HPA) and self-healing (probes)  
+- Understood Kubernetes feedback loop: metrics → decision → scaling  
+- The difference between liveness and readiness probes and their role in system stability  
 - Designed a `/health` endpoint for automated health monitoring  
-- Used **Metrics Server + HPA** for dynamic CPU-based scaling  
-- Learned how to separate **configuration (Helm values)** from **infrastructure logic**
+- Used Metrics Server + HPA for dynamic CPU-based scaling  
+- Learned how to separate configuration (Helm values) from infrastructure logic
 - Observed real system behavior under load (pods scaling dynamically)  
-- Ensured high availability by routing traffic only to **ready pods**
+- Ensured high availability by routing traffic only to ready pods
 
 
 
